@@ -1,0 +1,244 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="screen-orientation" content="portrait">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css">
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-plus/lib/index.full.js"></script>
+
+    <title>璨若星河</title>
+  </head>
+  <body>
+    <div id="app">
+      <el-container style="height:100%;">
+        <el-header style="z-index:1;text-align: center; line-height: 60px;background-color: black;overflow: hidden;display: flex;justify-content: center;">
+            <canvas id="canvas" style="height:160px;position: relative;top:-50px;left:0;"></canvas>
+            <div style="color:white;line-height: 60px;width:150px;font-size:22px;text-align: left;">想你入梦</div>
+            
+        </el-header>
+        
+        <el-main style="display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;z-index:2;">
+            <!-- <canvas id="c" style="z-index: 0;position: absolute;width:100%;height:calc(100% - 120px);"></canvas> -->
+           
+            <el-scrollbar style="width:100%;height:100%;background-color: rgba(255,255,255,0.5);display: flex;
+            flex-flow: column;
+            justify-content: center;
+            align-items: center;z-index:0;">
+            <el-image style="width:100%;" :src="'./photo/'+data[curpage].img" class="showimg" fit="contain"
+            :hide-on-click-modal=true
+            :preview-src-list="['./photo/'+data[curpage].img]"
+            >none</el-image>
+            <div style="width:100%;margin:20px 0px;display: flex;justify-content: center;flex-direction: column;">
+                <span style="width:100%;text-align: center;font-size:20px;font-weight: bolder;">{{data[curpage].title}}</span>
+                <span style="width:100%;text-align: center;color:#303133;font-size: 10px;">{{data[curpage].time}}</span>
+            </div>
+            
+            <div style="width:100%;">
+                <!-- <el-scrollbar style="width:100%;height:100%;"> -->
+                    <div style="text-indent:2em;">{{data[curpage].des}}</div>
+                <!-- </el-scrollbar> -->
+            </div>
+
+            </el-scrollbar>
+            
+        </el-main>
+        <el-footer style="text-align: center;z-index:1;padding-top:10px;">
+            <el-button style="width:40%;" plain @click="pageminus" :disabled="canminus">上一张</el-button>
+            <el-button style="width:40%;" plain @click="pageadd" :disabled="canadd">下一张</el-button>
+        </el-footer>
+
+      </el-container>
+    </div>
+    <script>
+      const App = {
+        data() {
+          return {
+            curpage:0,
+            totalpage:11,
+            canminus:true,
+            canadd:false,
+            data:[
+            {
+             'img':'1.jpg',
+             'title':'校马10km',
+             'time':'2021/04/10',
+             'des':'在某人的鼓励下，我们一同跑完了10km。虽然由于岔气，未曾拥有一个很好的体验，不过所幸最终还是完成了比赛。',   
+            },
+            {
+             'img':'2.jpg',
+             'title':'泰山顶峰',
+             'time':'2021/04/16',
+             'des':'会当凌绝顶，一览众山小。前一日登上泰山顶峰，凌晨四点共观绝美日出。下山途中，心潮澎湃，一点点雾霾也无妨。可惜恐高，未能从缆车上欣赏泰山的巍峨之姿。',   
+            },
+            {
+             'img':'3.jpg',
+             'title':'西山小道',
+             'time':'2021/04/30',
+             'des':'五一假期首日，雁栖湖畔，西山步道。正值雨霁，微风阵阵,更使心旷神怡。斯人如在侧，晴雨皆风景。',   
+            },
+            {
+             'img':'4.jpg',
+             'title':'正装毕业照',
+             'time':'2021/06/17',
+             'des':'拍完年级和班级合照后，在罗姆楼正门外拍摄。此时的表情还有一丝丝僵硬和拘谨，或许是过于青涩？',   
+            },
+            {
+             'img':'5.jpg',
+             'title':'学士服单人照',
+             'time':'2021/06/26',
+             'des':'晨起着学士服约拍。明媚的日光与青翠欲滴的枝叶交融，更显青春朝气。',   
+            },
+            {
+             'img':'6.jpg',
+             'title':'学士服合照',
+             'time':'2021/06/26',
+             'des':'愿不负韶华，愿未来可期。',   
+            },
+            {
+             'img':'7.png',
+             'title':'红毯合照',
+             'time':'2021/06/26',
+             'des':'晚餐前到红毯处留下纪念。在背后的签名墙上，也写下了彼此的姓名。',   
+            },
+            {
+             'img':'8.jpg',
+             'title':'灵山岛背来石',
+             'time':'2021/07/01',
+             'des':'海风与海浪交织着，如梦呓呢喃。远离城市喧嚣，仔细感受海岛的宁静。',   
+            },
+            {
+             'img':'9.jpg',
+             'title':'灵山岛初心客栈',
+             'time':'2021/07/01',
+             'des':'夜晚的海风静静吹着，两个人尝试解锁相机在夜晚的功能。此处应有某人一系列的表情包。',   
+            },
+            {
+             'img':'10.jpg',
+             'title':'灵山岛灯塔之下',
+             'time':'2021/07/02',
+             'des':'灯塔之下，岸边礁石处，不仅能望见海天相接，更能拥抱大海。水天一色，古人诚不欺也。是日并无日出美景，甚为可惜。',   
+            },
+            {
+             'img':'11.jpg',
+             'title':'熊猫繁育基地',
+             'time':'2021/07/04',
+             'des':'love pandas!',   
+            },
+            ]
+          };
+        },
+        methods:{
+            pageupdate()
+            {
+                if(this.curpage<=0)this.canminus=true;
+                else this.canminus=false;
+                if(this.curpage>=this.totalpage-1)this.canadd=true;
+                else this.canadd=false;
+            },
+            pageminus()
+            {
+                if(this.curpage>0)this.curpage--;
+                this.pageupdate();
+            },
+            pageadd()
+            {
+                if(this.curpage<this.totalpage-1)this.curpage++;
+                this.pageupdate();
+            }
+        }
+        // created:function()
+        // {
+        //     window.onload = function(argument) {
+        //     var canvas = document.getElementById('c');
+        //     canvas.width = window.innerWidth;
+        //     canvas.height = window.innerHeight;
+        //     if (canvas.getContext) {
+        //         var c = canvas.getContext('2d'),
+        //             w = canvas.width,
+        //             h = canvas.height,
+        //             petal_number = 1000,
+        //             petals = [];
+        //         c.fillStyle = "pink";
+        //         c.strokeStyle = 'red';
+        //         c.lineWidth = 10;
+        //         // c.fillRect(100, 100, 300, 200);
+        //         var Petal = function() {
+        //             this.x = Math.random() * 2 * w;
+        //             this.y = Math.random() * h;
+        //             this.petal_width = Math.random() * 4 + 3;
+        //             this.vector_x = Math.random() * 2 - 4;
+        //             this.speed = Math.random() * 4;
+        //         }
+        //         Petal.prototype.move = function() {
+        //             this.x += this.vector_x;
+        //             this.y += this.speed;
+        //             if (this.y > h || this.x < 0) {
+        //                 this.x = Math.random() * 2 * w;
+        //                 this.y = -20 * Math.random();
+        //             }
+        //         }
+        //         Petal.prototype.draw = function() {
+        //             c.fillRect(this.x, this.y, this.petal_width, this.petal_width);
+        //         }
+        //         function start() {
+        //             for (var i = 0; i < petal_number; i++) {
+        //                 petals[i].draw();
+        //                 petals[i].move();
+        //             }
+        //         }
+        //         for (var i = 0; i < petal_number; i++) {
+        //             petals.push(new Petal());
+        //         }
+        //         setInterval(function() {
+        //             c.clearRect(0, 0, w, h);
+        //             start();
+        //         }, 24);
+        //     }
+        // }
+        // }
+
+    
+    };
+      const app = Vue.createApp(App);
+      app.use(ElementPlus);
+      app.mount("#app");
+    </script>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
+
+<style>
+html,body
+{
+    height:100%;
+    width:100%;
+    padding: 0;
+    margin: 0;
+}
+#app
+{
+    height: 100vh;
+}
+.el-main
+{
+    padding: 10px;
+}
+.showimg .el-image__error, .showimg .el-image__inner, .showimg .el-image__placeholder
+{
+    height:auto;
+}
+@media (min-width: 420px) {
+    #canvas
+    {
+        top:0 !important;
+        height:60px !important;
+    }
+}
+</style>
