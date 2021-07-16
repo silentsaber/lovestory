@@ -44,8 +44,9 @@
             v-if="loading==false"
             :hide-on-click-modal=true
             :preview-src-list="[data[curpage].img]"
-            :style="{transform: 'rotate('+data[curpage].deg+'deg)'}"
+            
             >
+            <!-- :style="{transform: 'rotate('+data[curpage].deg+'deg)'}" -->
             
                 <div slot="placeholder" class="image-slot">
                     <svg viewBox="25 25 50 50" class="circular"  style="height: 42px;
@@ -126,7 +127,7 @@
              'des':'五一假期首日，雁栖湖畔，西山步道。正值雨霁，微风阵阵,更使心旷神怡。斯人如在侧，晴雨皆风景。',   
             },
             {
-             'img':'4.jpg',
+             'img':'19.jpg',
              'title':'正装毕业照',
              'time':'2021/06/17',
              'des':'拍完年级和班级合照后，在罗姆楼正门外拍摄。此时的表情还有一丝丝僵硬和拘谨，或许是过于青涩？',   
@@ -479,6 +480,7 @@
                     this.loadcnt++;
                     this.loadper = Math.floor(this.loadcnt / this.totalpage * 100);
                     this.data[i].img = image.src;
+                    // console.log(IMAGEURL.createObjectURL(image))
                     console.log(image)
                     var that = this;
                     EXIF.getData(image, function(){
