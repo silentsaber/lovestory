@@ -10,6 +10,7 @@
     <link rel="icon" href="ok.ico" type="image/jpg">
     <!-- import JavaScript -->
     <script src="https://unpkg.zhimg.com/element-plus/lib/index.full.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 
     <title>璨若星河</title>
   </head>
@@ -39,11 +40,13 @@
             flex-flow: column;
             justify-content: center;
             align-items: center;z-index:0;">
-            <el-image style="width:100%;image-orientation: from-image;" :src="data[curpage].img" class="showimg" fit="contain"
+            <el-image style="width:100%;" :src="data[curpage].img" class="showimg" fit="contain"
             v-if="loading==false"
             :hide-on-click-modal=true
             :preview-src-list="[data[curpage].img]"
             >
+            
+            <!-- :style="{transform: 'rotate('+data[curpage].deg+'deg)'}" -->
                 <div slot="placeholder" class="image-slot">
                     <svg viewBox="25 25 50 50" class="circular"  style="height: 42px;
                     width: 42px;
@@ -99,6 +102,7 @@
             canminus:true,
             canadd:false,
             dir:'https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/photo/',
+            // dir:'./photo/',
             loadcnt:0,
             loadper:0,
             data:[
@@ -107,6 +111,7 @@
              'title':'校马十公里',
              'time':'2021/04/10',
              'des':'在某人的鼓励下，我们一同跑完了10km。虽然由于岔气，未曾拥有一个很好的体验，不过所幸最终还是完成了比赛。',   
+             'deg':0,
             },
             {
              'img':'2.jpg',
@@ -474,6 +479,32 @@
                     this.loadcnt++;
                     this.loadper = Math.floor(this.loadcnt / this.totalpage * 100);
                     this.data[i].img = image.src;
+
+                    var that = this;
+                    EXIF.getData(image, function(){
+                    let orientation = EXIF.getTag(this, "Orientation");
+                    console.log(EXIF.getAllTags(this))
+                    console.log(i)
+                    console.log(orientation)
+                    switch(orientation)
+                    {
+                        case 3:
+                            that.data[i].deg=180;
+                            break;
+                        case 6:
+                            that.data[i].deg=90;
+                            break;
+                        case 8:
+                            that.data[i].deg=-90;
+                            break;
+                        default:
+                            that.data[i].deg=0;
+                            break;
+
+                    }
+                    
+                    });
+
                     if(this.loadcnt==this.totalpage)
                     {
                         
@@ -595,6 +626,10 @@ html,body
 .showimg .el-image__error, .showimg .el-image__inner, .showimg .el-image__placeholder
 {
     height:auto;
+}
+.showimg img
+{
+    /* image-orientation: from-image; */
 }
 @keyframes ran {
     from {
