@@ -9,7 +9,6 @@
     <link rel="icon" href="ok.ico" type="image/jpg">
     <!-- import JavaScript -->
     <script src="https://unpkg.zhimg.com/element-plus/lib/index.full.js"></script>
-    <!-- <script src="http://localhost:8080/target/target-script-min.js#anonymous"></script> -->
 
     <title>璨若星河</title>
   </head>
@@ -36,7 +35,20 @@
             v-if="loading==false"
             :hide-on-click-modal=true
             :preview-src-list="[data[curpage].img]"
-            >none</el-image>
+            >
+                <div slot="placeholder" class="image-slot">
+                    <svg viewBox="25 25 50 50" class="circular"  style="height: 42px;
+                    width: 42px;
+                    animation: loading-rotate 2s linear infinite;">
+                    <circle cx="50" cy="50" r="20" fill="none" class="path" style="    animation: loading-dash 1.5s ease-in-out infinite;
+                    stroke-dasharray: 90,150;
+                    stroke-dashoffset: 0;
+                    stroke-width: 2;
+                    stroke: #409eff;
+                    stroke-linecap: round;"></circle>
+                    </svg>
+                </div>
+            </el-image>
             <div style="width:100%;margin:20px 0px;display: flex;justify-content: center;flex-direction: column;">
                 <span style="width:100%;text-align: center;font-size:20px;font-weight: bolder;">{{data[curpage].title}}</span>
                 <span style="width:100%;text-align: center;color:#303133;font-size: 10px;">{{data[curpage].time}}</span>
@@ -55,11 +67,27 @@
             <el-button style="width:40%;" plain @click="pageminus" :disabled="canminus">上一张</el-button>
             <el-button style="width:40%;" plain @click="pageadd" :disabled="canadd">下一张</el-button>
         </el-footer>
-        <!-- <script src="./js/script.js"></script> -->
       </el-container>
       <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loading==true">
-        <el-progress type="circle" :percentage="loadper" ></el-progress>
-        <p style="font-size:18px;">Loading...</p>
+        <el-progress type="circle" :percentage="loadper" >
+            
+        </el-progress>
+
+            <!-- <svg viewBox="25 25 50 50" class="circular"  style="height: 42px;
+            width: 42px;
+            animation: loading-rotate 2s linear infinite;">
+            <circle cx="50" cy="50" r="20" fill="none" class="path" style="    animation: loading-dash 1.5s ease-in-out infinite;
+            stroke-dasharray: 90,150;
+            stroke-dashoffset: 0;
+            stroke-width: 2;
+            stroke: #409eff;
+            stroke-linecap: round;"></circle>
+            </svg> -->
+            
+            <p style="font-size:20px;">loading······</p>
+
+
+        
       </div>
     </div>
     <script>
@@ -447,18 +475,11 @@
                     this.loadcnt++;
                     this.loadper = Math.floor(this.loadcnt / this.totalpage * 100);
                     this.data[i].img = image.src;
-                    
-                    // console.log(image);
-                    // console.log(this.data[i].img);
-                    // console.log(this.loadcnt);
+                    console.log(image)
                     if(this.loadcnt==this.totalpage)
                     {
                         
-                        // var newjs = document.createElement('script');
                         this.loading=false;
-                        // newjs.src="./js/script.js"
-                        // document.body.append(newjs);
-                        // console.log("add js")
                         this.showlove();
                     }
                 }
@@ -553,9 +574,6 @@
       app.use(ElementPlus);
       app.mount("#app");
     </script>
-
-    <!-- <script src="./js/script.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/js/script.js"></script> -->
   </body>
 </html>
 
