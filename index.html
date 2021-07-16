@@ -18,7 +18,13 @@
       <el-container style="height:100%;" v-show="loading==false">
         <el-header style="z-index:1;text-align: center; line-height: 60px;background-color: black;overflow: hidden;display: flex;justify-content: center;">
             <canvas id="canvas" style="height:160px;position: relative;top:-50px;left:0;"></canvas>
-            <div style="color:white;line-height: 60px;width:150px;font-size:22px;text-align: left;">想你入梦</div>
+            <div style="color:white;line-height: 60px;width:150px;font-size:22px;text-align: left;font-family: 'zhiyong';font-weight: bold;
+background-color: #A9C9FF;
+background-image: linear-gradient(270deg, #A9C9FF 0%, #FFBBEC 100%);
+
+            -webkit-background-clip: text;
+            color: transparent;
+            ">想你入梦</div>
             
         </el-header>
         
@@ -53,8 +59,14 @@
             <div style="width:100%;margin:20px 0px;display: flex;justify-content: center;flex-direction: column;">
                 <span style="width:100%;text-align: center;font-size:20px;font-weight: bolder;
                 font-family: 'zhiyong';
+                background-color: #4158D0;
+                background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+                -webkit-background-clip: text;
+                color: transparent;
                 ">{{data[curpage].title}}</span>
-                <span style="width:100%;text-align: center;color:#303133;font-size: 10px;">{{data[curpage].time}}</span>
+                <span style="width:100%;text-align: center;color:#303133;font-size: 10px;margin-top:3px;
+                font-family: 'muyao';
+                ">{{data[curpage].time}}</span>
             </div>
             
             <div style="width:100%;">
@@ -91,7 +103,7 @@
             data:[
             {
              'img':'1.jpg',
-             'title':'校马10km',
+             'title':'校马十公里',
              'time':'2021/04/10',
              'des':'在某人的鼓励下，我们一同跑完了10km。虽然由于岔气，未曾拥有一个很好的体验，不过所幸最终还是完成了比赛。',   
             },
