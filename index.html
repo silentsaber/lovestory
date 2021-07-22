@@ -44,8 +44,8 @@
             v-if="loading==false"
             :hide-on-click-modal=true
             :preview-src-list="[data[curpage].img]"
-            :style="{transform: 'rotate('+data[curpage].deg+'deg)'}"
             >
+            <!-- :style="{transform: 'rotate('+data[curpage].deg+'deg)'}" -->
             
                 <div slot="placeholder" class="image-slot">
                     <svg viewBox="25 25 50 50" class="circular"  style="height: 42px;
@@ -481,30 +481,30 @@
                     this.data[i].img = image.src;
                     // console.log(URL.createObjectURL(image))
                     // console.log(image)
-                    var that = this;
-                    EXIF.getData(image, function(){
-                    let orientation = EXIF.getTag(this, "Orientation");
-                    // console.log(EXIF.getAllTags(this))
-                    // console.log(i)
-                    // console.log(orientation)
-                    switch(orientation)
-                    {
-                        case 3:
-                            that.data[i].deg=180;
-                            break;
-                        case 6:
-                            that.data[i].deg=90;
-                            break;
-                        case 8:
-                            that.data[i].deg=-90;
-                            break;
-                        default:
-                            that.data[i].deg=0;
-                            break;
+                    // var that = this;
+                    // EXIF.getData(image, function(){
+                    // let orientation = EXIF.getTag(this, "Orientation");
+                    // // console.log(EXIF.getAllTags(this))
+                    // // console.log(i)
+                    // // console.log(orientation)
+                    // switch(orientation)
+                    // {
+                    //     case 3:
+                    //         that.data[i].deg=180;
+                    //         break;
+                    //     case 6:
+                    //         that.data[i].deg=90;
+                    //         break;
+                    //     case 8:
+                    //         that.data[i].deg=-90;
+                    //         break;
+                    //     default:
+                    //         that.data[i].deg=0;
+                    //         break;
 
-                    }
+                    // }
                     
-                    });
+                    // });
 
                     if(this.loadcnt==this.totalpage)
                     {
