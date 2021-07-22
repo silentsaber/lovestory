@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+    </head>
+    <script>
+        let image = new Image()
+        image.src = 'C:/Users/nikelong/Desktop/memory/photos/7.png';
+        image.crossOrigin = 'anonymous'
+        image.onload = ()=>{
+            
+            
+            console.log(image)
+            var that = this;
+            EXIF.getData(image, function(){
+            let orientation = EXIF.getTag(this, "Orientation");
+            console.log(EXIF.getAllTags(this))
+            document.body.append(image)
+            document.body.append(EXIF.getAllTags(this))
+            console.log(orientation)
+            
+            
+        })
+        }
+
+    </script>
+</html>
