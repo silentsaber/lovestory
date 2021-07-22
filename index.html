@@ -480,13 +480,13 @@
                     this.loadper = Math.floor(this.loadcnt / this.totalpage * 100);
                     this.data[i].img = image.src;
                     // console.log(URL.createObjectURL(image))
-                    console.log(image)
+                    // console.log(image)
                     var that = this;
                     EXIF.getData(image, function(){
                     let orientation = EXIF.getTag(this, "Orientation");
-                    console.log(EXIF.getAllTags(this))
-                    console.log(i)
-                    console.log(orientation)
+                    // console.log(EXIF.getAllTags(this))
+                    // console.log(i)
+                    // console.log(orientation)
                     switch(orientation)
                     {
                         case 3:
