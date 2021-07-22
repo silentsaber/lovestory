@@ -101,8 +101,8 @@
             totalpage:11,
             canminus:true,
             canadd:false,
-            dir:'https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/photo/',
-            // dir:'./photo/',
+            dir:'https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/photos/',
+            // dir:'./photos/',
             loadcnt:0,
             loadper:0,
             data:[
@@ -479,7 +479,7 @@
                     this.loadcnt++;
                     this.loadper = Math.floor(this.loadcnt / this.totalpage * 100);
                     this.data[i].img = image.src;
-                    console.log(URL.createObjectURL(image))
+                    // console.log(URL.createObjectURL(image))
                     console.log(image)
                     var that = this;
                     EXIF.getData(image, function(){
