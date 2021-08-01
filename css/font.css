@@ -9,3 +9,9 @@
     src: url('./muyao.ttf'); 
     font-style: normal;  
 }
+
+@font-face {  
+    font-family: 'wanghan';  
+    src: url('./wanghan.ttf'); 
+    font-style: normal;  
+}
