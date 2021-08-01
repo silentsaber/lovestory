@@ -6,12 +6,11 @@
     <script src="https://unpkg.zhimg.com/vue@next"></script>
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.zhimg.com/element-plus/lib/theme-chalk/index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main//css/font.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/css/font.css">
     <link rel="icon" href="ok.ico" type="image/jpg">
     <!-- import JavaScript -->
     <script src="https://unpkg.zhimg.com/element-plus/lib/index.full.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
-
     <title>璨若星河</title>
   </head>
   <body>
@@ -20,16 +19,22 @@
       <el-container style="height:100%;" v-show="loading==false && showfail==false">
         <el-header style="z-index:1;text-align: center; line-height: 60px;background-color: black;overflow: hidden;display: flex;justify-content: center;">
             <canvas id="canvas" style="height:160px;position: relative;top:-50px;left:0;"></canvas>
-            <div style="color:white;line-height: 60px;width:150px;font-size:22px;text-align: left;font-family: 'wanghan';font-weight: bold;
+            <div style="color:white;line-height: 22px;width:160px;font-size:18px;text-align: left;font-family: 'muyao';font-weight: bold;
             background: #12c2e9;  
             background: -webkit-linear-gradient(to left, #f64f59, #c471ed, #12c2e9,  #f64f59); 
             background: linear-gradient(to left, #f64f59, #c471ed, #12c2e9,  #f64f59); 
             animation: ran 30s linear infinite;
             -webkit-background-clip: text;
             color: transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             ">
             <!-- 想你入梦 -->
-            Dear Fairy
+            <!-- Dear Fairy -->
+            <span>我们已经相守</span>
+            <span>{{curdate}}</span>
             </div>
             
         </el-header>
@@ -102,7 +107,7 @@
       </el-container>
       <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loading==true && showfail==false">
         <el-progress type="circle" :percentage="loadper" ></el-progress>            
-        <p style="font-size:20px;">loading······</p>
+        <p style="font-size:20px;">loading...</p>
       </div>
 
       <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="showfail==true" @click="refresh">
@@ -116,6 +121,7 @@
       const App = {
         data() {
           return {
+            curdate:null,
             loading:true,
             curpage:0,
             totalpage:11,
@@ -574,11 +580,50 @@
             {
                 if(this.curpage<this.totalpage-1)this.curpage++;
                 this.pageupdate();
+            },
+            timecom()
+            {
+                var lasttime =new Date(2021,5,20,0,0,0);
+                var curtime = new Date();
+                let destime = curtime.getTime()-lasttime.getTime();
+                let d = Math.floor(destime / (24 * 3600 * 1000));
+                destime = destime % (24 * 3600 * 1000);
+                let h = Math.floor(destime / (3600 * 1000));
+                destime = destime % (3600 * 1000);
+                let m = Math.floor(destime / (60 * 1000));
+                destime = destime % (60 * 1000);
+                let s = Math.round(destime / 1000);
+                
+                this.curdate = d+'天'+(h+'').padStart(2, '0')+'时'+(m+'').padStart(2, '0')+'分'+(s+'').padStart(2, '0')+'秒'
+            },
+            datecom()
+            {
+                // Date.prototype.Format = function (fmt) { //author: meizz 
+                //     var o = {
+                //         "M+": this.getMonth() + 1, //月份 
+                //         "d+": this.getDate(), //日 
+                //         "h+": this.getHours(), //小时 
+                //         "m+": this.getMinutes(), //分 
+                //         "s+": this.getSeconds(), //秒 
+                //         "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+                //         "S": this.getMilliseconds() //毫秒 
+                //     };
+                //     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+                //     for (var k in o)
+                //     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                //     return fmt;
+                // }
+                this.timecom();
+                setInterval(()=>
+                {
+                    this.timecom();
+                },1000);
             }
         },
         created:function()
         {
             this.preload();
+            this.datecom();
         }
         // beforeCreate:function()
         // {
