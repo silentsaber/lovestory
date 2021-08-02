@@ -18,6 +18,9 @@
     <!-- <router-view> -->
       <el-container style="height:100%;" v-show="loading==false && showfail==false">
         <el-header style="z-index:1;text-align: center; line-height: 60px;background-color: black;overflow: hidden;display: flex;justify-content: center;">
+            <div @click="opentimeline()" style="position: fixed;left:0;top:0; width:60px; height:60px; background-color: rgb(58, 58, 58);z-index:1;">
+                <i class="el-icon-discover" style="line-height: 60px; color:white; font-size:30px;"></i>
+            </div>
             <canvas id="canvas" style="height:160px;position: relative;top:-50px;left:0;"></canvas>
             <div style="color:white;line-height: 22px;width:160px;font-size:18px;text-align: left;font-family: 'muyao';font-weight: bold;
             background: #12c2e9;  
@@ -105,6 +108,38 @@
             <el-button style="width:40%;" plain @click="pageadd" :disabled="canadd">下一张</el-button>
         </el-footer>
       </el-container>
+
+      <div class="logall" style="position:fixed;left:0;top:0;width:100%;height: 100%;z-index:2;background-color:#F2F6FC;" v-show="showtimeline">
+        <div @click="showtimeline=false;" style="position: fixed;width:100%;height:60px;left:0;top:0;z-index:3;background-color:rgb(198, 226, 255);text-align: center;">
+            <i class="el-icon-circle-close" style="line-height: 60px;color:white;font-size: 40px;"></i>
+        </div>
+        <el-scrollbar style="position: relative; top:60px; height:calc(100vh - 60px);overflow-x: hidden;width:100%;" class="scroll_right">
+            <el-timeline style="left:calc(50% - 46px);position: relative;padding-top: 20px;">
+                <el-timeline-item v-for="(one, index) in data"
+                :timestamp="one.time"
+                placement="top"
+                :color="one.color"
+                :class="index%2==0?'showr':'showl'"
+                :id = "'idx'+index"
+                >
+                  <el-card  @click="data[curpage].color=negtivatecol;curpage=index;pageupdate();data[curpage].color=activatecol;showtimeline=false;"
+                  :body-style="{ padding: '0px',display: 'flex',
+                  justifyContent: 'center',
+                  flexDirection: 'column',
+                  alignItems: 'center', }">
+                    <b style="padding:5px 0;">{{one.title}}</b>
+                    <el-divider style="margin:0;"></el-divider>
+                    <p style="padding: 0 10px;">{{one.sig}}</p>
+                  </el-card>
+                </el-timeline-item>
+                <el-timeline-item :color="negtivatecol">
+                  <div style="visibility: hidden;">1</div>
+                </el-timeline-item>       
+            </el-timeline>
+            <div style="text-align: center;padding-bottom:20px;font-family:'zhiyong';font-size:22px;">我们仍在路上...</div>
+        </el-scrollbar>
+      </div>
+
       <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loading==true && showfail==false">
         <el-progress type="circle" :percentage="loadper" ></el-progress>            
         <p style="font-size:20px;">loading...</p>
@@ -124,6 +159,9 @@
             curdate:null,
             loading:true,
             curpage:0,
+            negtivatecol:'#E4E7ED',
+            activatecol:'#409EFF',
+            showtimeline:false,
             totalpage:11,
             canminus:true,
             canadd:false,
@@ -140,7 +178,7 @@
              'title':'校马十公里',
              'time':'2021/04/10',
              'des':'在某人的鼓励下，我们一同跑完了10km。虽然由于岔气，未曾拥有一个很好的体验，不过所幸最终还是完成了比赛。',   
-             'deg':0,
+             'sig':null,
             },
             {
              'img':'2.jpg',
@@ -499,8 +537,20 @@
                     draw();
                 }
             },
+            sigeach(i)
+            {
+                if(this.data[i].des.length>12)
+                {
+                    this.data[i].sig=this.data[i].des.slice(0,12)+'...'
+                }
+                else this.data[i].sig=this.data[i].des;
+                console.log(this.data[i].des.length)
+                console.log(this.data[i].sig)
+                
+            },
             preloadeach(i) //单张图片预加载
             {
+                this.sigeach(i);
                 let image = new Image()
                 image.src = this.dir+this.data[i].img;
             
@@ -573,12 +623,22 @@
             },
             pageminus()
             {
-                if(this.curpage>0)this.curpage--;
+                if(this.curpage>0)
+                {
+                    this.data[this.curpage].color=this.negtivatecol;
+                    this.curpage--;
+                    this.data[this.curpage].color=this.activatecol;
+                }
                 this.pageupdate();
             },
             pageadd()
             {
-                if(this.curpage<this.totalpage-1)this.curpage++;
+                if(this.curpage<this.totalpage-1)
+                {
+                    this.data[this.curpage].color=this.negtivatecol;
+                    this.curpage++;
+                    this.data[this.curpage].color=this.activatecol;
+                }
                 this.pageupdate();
             },
             timecom()
@@ -598,37 +658,65 @@
             },
             datecom()
             {
-                // Date.prototype.Format = function (fmt) { //author: meizz 
-                //     var o = {
-                //         "M+": this.getMonth() + 1, //月份 
-                //         "d+": this.getDate(), //日 
-                //         "h+": this.getHours(), //小时 
-                //         "m+": this.getMinutes(), //分 
-                //         "s+": this.getSeconds(), //秒 
-                //         "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-                //         "S": this.getMilliseconds() //毫秒 
-                //     };
-                //     if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-                //     for (var k in o)
-                //     if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-                //     return fmt;
-                // }
                 this.timecom();
                 setInterval(()=>
                 {
                     this.timecom();
                 },1000);
+            },
+            init()
+            {
+                this.curpage=0;             
+                for(let i=0;i<this.data.length;i++)
+                {
+                    if(i==this.curpage)
+                    {
+                        this.data[i].color=this.activatecol;
+                    }
+                    else this.data[i].color=this.negtivatecol;
+                }
+            },
+            opentimeline()
+            {
+                this.showtimeline=true;
+                
+                console.log(this.curpage);
+                this.$nextTick(() => {
+                    document.querySelector(`#idx${this.curpage}`).scrollIntoView({
+                    behavior: "smooth",  // 平滑过渡
+                    block:    "start"  // 上边框与视窗顶部平齐。默认值
+                })
+                })
+                // setTimeout(()=>{
+                //     // let pos = document.querySelector(`#idx${this.curpage}`)
+                //     // console.log(pos)
+                //     // pos.scrollIntoView();
+                //     document.querySelector(`#idx${this.curpage}`).scrollIntoView({
+                //     behavior: "smooth",  // 平滑过渡
+                //     block:    "start"  // 上边框与视窗顶部平齐。默认值
+                // });
+                // },50);
+               
+
+                
             }
         },
         created:function()
         {
             this.preload();
             this.datecom();
+            this.init();
+        },
+        watch:{
+            // curpage:function(val)
+            // {
+            //     console.log(this.curpage);
+            //     console.log(val);
+            //     this.data[this.curpage].color=this.negtivatecol;
+            //     this.curpage=val;
+            //     this.data[this.curpage].color=this.activatecol;
+            // }
         }
-        // beforeCreate:function()
-        // {
-        //     this.preload();
-        // }
         // created:function()
         // {
         //     window.onload = function(argument) {
@@ -713,6 +801,25 @@ html,body
 .showimg img
 {
     /* image-orientation: from-image; */
+}
+.logall .el-timeline-item
+{
+  width: 50%;
+}
+.showl .el-timeline-item__wrapper
+{
+  position: relative;
+  left:calc(-100% - 22px);
+}
+.showr .el-timeline-item__wrapper
+{
+  position: relative;
+}
+.logall .el-scrollbar__wrap{
+	overflow-x: hidden;
+}
+.logall .el-scrollbar__bar.is-horizontal {
+	display: none;
 }
 @keyframes ran {
     from {
