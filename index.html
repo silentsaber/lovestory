@@ -11,6 +11,7 @@
     <!-- import JavaScript -->
     <script src="https://unpkg.zhimg.com/element-plus/lib/index.full.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <title>璨若星河</title>
   </head>
   <body>
@@ -154,6 +155,7 @@
       </div>
 
       <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loading==true && showfail==false">
+        <p>今天是{{dateinfo.year+'年'+dateinfo.month+'月'+dateinfo.day+'日'}}，农历{{dateinfo.lMonth+'月'+dateinfo.lDate}}</p>
         <el-progress type="circle" :percentage="loadper" ></el-progress>            
         <p style="font-size:20px;">loading...</p>
       </div>
@@ -169,6 +171,13 @@
       const App = {
         data() {
           return {
+            dateinfo:{
+                'year':'1999',
+                'month':'1',
+                'day':'1',
+                'lMonth':'一',
+                'lDate':'一',
+            },
             curdate:null,
             loading:true,
             curpage:0,
@@ -575,7 +584,7 @@
                     if(this.loadcnt==this.totalpage)
                     {
                         
-                        this.loading=false;
+                        // this.loading=false;
                         this.showlove();
                     }
                 }
@@ -696,10 +705,64 @@
                     block:    "start"  // 上边框与视窗顶部平齐。默认值
                     })
                 })
+            },
+
+            dateget()
+            {
+                
+                const readBlobAsText = (blob, encoding) => {
+                    return new Promise((resolve, reject) => {
+                        const fr = new FileReader();
+                        fr.onload = event => {
+                            resolve(fr.result);
+                        };
+                        fr.onerror = err => {
+                            reject(err);
+                        };
+                        fr.readAsText(blob, encoding);
+                    });
+                };
+
+
+                fetch("http://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query=2021年8月", {
+                    "body": null,
+                    "method": "GET"
+                }).then(res => {
+                    const contentType = res.headers.get('content-type');
+                    if (contentType !== null) {
+                        if (/(^|;)application\/json($|;)/i.test(contentType)) {
+                            const charsetMatches = contentType.match(/(^|;)charset=([^;]+)($|;)/i);
+                            if (charsetMatches && charsetMatches.length && charsetMatches[2]) {
+                                const charset = charsetMatches[2];
+                                return res.blob().then(blob => readBlobAsText(blob, charset)).then(JSON.parse);
+                            } else {
+                                return res.json();
+                            }
+                        }
+                    }
+                }).then(data => {
+                    let dates = data.data[0].almanac;
+                    let curdate = new Date();
+                    let year = curdate.getFullYear();
+                    let month = curdate.getMonth()+1;
+                    let day = curdate.getDate();
+                    for(let i=0;i<dates.length;i++)
+                    {
+                        if(dates[i].year==year&&dates[i].month==month&&dates[i].day==day)
+                        {
+                            console.log(dates[i])
+                            this.dateinfo=dates[i]
+                            break;
+                        }
+                    }
+
+                })
+
             }
         },
         created:function()
         {
+            this.dateget();
             this.preload();
             this.datecom();
             this.init();
