@@ -729,37 +729,22 @@
             dateget()
             {
                 
-                const readBlobAsText = (blob, encoding) => {
-                    return new Promise((resolve, reject) => {
-                        const fr = new FileReader();
-                        fr.onload = event => {
-                            resolve(fr.result);
-                        };
-                        fr.onerror = err => {
-                            reject(err);
-                        };
-                        fr.readAsText(blob, encoding);
-                    });
-                };
+                // const readBlobAsText = (blob, encoding) => {
+                //     return new Promise((resolve, reject) => {
+                //         const fr = new FileReader();
+                //         fr.onload = event => {
+                //             resolve(fr.result);
+                //         };
+                //         fr.onerror = err => {
+                //             reject(err);
+                //         };
+                //         fr.readAsText(blob, encoding);
+                //     });
+                // };
 
-
-                fetch("https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query=2021年8月", {
-                    "body": null,
-                    "method": "GET"
-                }).then(res => {
-                    const contentType = res.headers.get('content-type');
-                    if (contentType !== null) {
-                        if (/(^|;)application\/json($|;)/i.test(contentType)) {
-                            const charsetMatches = contentType.match(/(^|;)charset=([^;]+)($|;)/i);
-                            if (charsetMatches && charsetMatches.length && charsetMatches[2]) {
-                                const charset = charsetMatches[2];
-                                return res.blob().then(blob => readBlobAsText(blob, charset)).then(JSON.parse);
-                            } else {
-                                return res.json();
-                            }
-                        }
-                    }
-                }).then(data => {
+                $.getJSON("https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query="+new Date().getFullYear()+"年"+(new Date().getMonth()+1)+"月&cb=?", data=> {
+                    
+                    console.log(data)
                     let dates = data.data[0].almanac;
                     let curdate = new Date();
                     let year = curdate.getFullYear();
@@ -774,8 +759,46 @@
                             break;
                         }
                     }
+                });
 
-                })
+                // fetch("https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query=2021年8月&cb=jsonp_1628165929726_23992", {
+                //     body: null,
+                //     method: "GET",
+                //     headers: { "Access-Control-Allow-Origin": "*"},
+                //     mode:'no-cors',
+                // }).then(res => {
+                //     console.log(res);
+                //     const contentType = res.headers.get('content-type');
+                //     console.log(contentType)
+                //     if (contentType !== null) {
+                //         if (/(^|;)application\/json($|;)/i.test(contentType)) {
+                //             const charsetMatches = contentType.match(/(^|;)charset=([^;]+)($|;)/i);
+                //             if (charsetMatches && charsetMatches.length && charsetMatches[2]) {
+                //                 const charset = charsetMatches[2];
+                //                 return res.blob().then(blob => readBlobAsText(blob, charset)).then(JSON.parse);
+                //             } else {
+                //                 return res.json();
+                //             }
+                //         }
+                //     }
+                // }).then(data => {
+                //     console.log(data);
+                //     let dates = data.data[0].almanac;
+                //     let curdate = new Date();
+                //     let year = curdate.getFullYear();
+                //     let month = curdate.getMonth()+1;
+                //     let day = curdate.getDate();
+                //     for(let i=0;i<dates.length;i++)
+                //     {
+                //         if(dates[i].year==year&&dates[i].month==month&&dates[i].day==day)
+                //         {
+                //             console.log(dates[i])
+                //             this.dateinfo=dates[i]
+                //             break;
+                //         }
+                //     }
+
+                // })
 
             }
         },
