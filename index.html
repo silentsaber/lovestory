@@ -161,7 +161,7 @@
         <p style="font-size:20px;">loading...</p>
       </div>
 
-      <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loadfinished==true">
+      <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loadfinished==true && loading==true">
         <p style="font-family: 'muyao'; font-size:30px;text-align:center;color: dimgray;">
             今天是<br/><span class="dateinfox">{{dateinfo.year}}</span>年<span class="dateinfox">{{dateinfo.month}}</span>月<span class="dateinfox">{{dateinfo.day}}</span>日<br/>农历<span class="dateinfox">{{dateinfo.lMonth}}</span>月<span class="dateinfox">{{dateinfo.lDate}}</span></p>
         <p v-if="dateinfo.hasOwnProperty('value') && dateinfo.value != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(70,70,70);">
