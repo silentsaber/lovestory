@@ -182,7 +182,7 @@
             color: transparent;
             font-size:40px;
             ">{{dateinfo.desc}}</span>哦!</p>
-        <el-button @click="loading = false;" style="width:50%;" type="primary">开始浏览</el-button>
+        <el-button @click="clickbtn()" style="width:50%;" type="primary">开始浏览</el-button>
       </div>
 
 
@@ -294,10 +294,15 @@
           };
         },
         methods:{
+            clickbtn()
+            {
+                this.loading = false;
+                this.showlove();
+            },
             showlove()
             {
-                window.onload = () => 
-                {
+                // window.onload = () => 
+                // {
                     var canvas = document.getElementById("canvas");
 
                     canvas.width = window.innerWidth;
@@ -585,7 +590,7 @@
                     }
 
                     draw();
-                }
+                // }
             },
             sigeach(i)
             {
@@ -614,7 +619,7 @@
                         
                         // this.loading=false;
                         this.loadfinished = true;
-                        this.showlove();
+                        // this.showlove();
                     }
                 }
                 image.onerror = ()=>
@@ -633,7 +638,7 @@
                         }
                         // this.loading=false;
                         this.loadfinished = true;
-                        this.showlove();
+                        // this.showlove();
                     }
                 }
             },
