@@ -1,17 +1,17 @@
 @font-face {  
     font-family: 'zhiyong';  
-    src: url('./zhiyong.ttf'); 
+    src: url('https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/css/zhiyong.ttf'); 
     font-style: normal;  
 }
 
 @font-face {  
     font-family: 'muyao';  
-    src: url('./muyao.ttf'); 
+    src: url('https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/css/muyao.ttf'); 
     font-style: normal;  
 }
 
 @font-face {  
     font-family: 'wanghan';  
-    src: url('./wanghan.ttf'); 
+    src: url('https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/css/wanghan.ttf'); 
     font-style: normal;  
 }
