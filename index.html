@@ -6,7 +6,9 @@
     <script src="https://unpkg.zhimg.com/vue@next"></script>
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.zhimg.com/element-plus/lib/theme-chalk/index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/css/font.css">
+    <!-- <link rel="preload" as="font" type="font/ttf" href="https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/css/zhiyong.ttf">
+    <link rel="preload" as="font" type="font/ttf" href="https://cdn.jsdelivr.net/gh/silentsaber/lovestory@main/css/muyao.ttf"> -->
+    <link rel="stylesheet" href="./css/font.css">
     <link rel="icon" href="ok.ico" type="image/jpg">
     <!-- import JavaScript -->
     <script src="https://unpkg.zhimg.com/element-plus/lib/index.full.js"></script>
@@ -154,30 +156,36 @@
         </el-scrollbar>
       </div>
 
-      <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loading==true && showfail==false">
-        <p style="font-family: 'muyao'; font-size:24px;text-align:center;color: dimgray;">
+      <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loading==true && showfail==false && loadfinished==false">
+        <el-progress type="circle" :percentage="loadper" ></el-progress>            
+        <p style="font-size:20px;">loading...</p>
+      </div>
+
+      <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loadfinished==true && loading==true">
+        <p style="font-family: 'muyao'; font-size:30px;text-align:center;color: dimgray;">
             今天是<br/><span class="dateinfox">{{dateinfo.year}}</span>年<span class="dateinfox">{{dateinfo.month}}</span>月<span class="dateinfox">{{dateinfo.day}}</span>日<br/>农历<span class="dateinfox">{{dateinfo.lMonth}}</span>月<span class="dateinfox">{{dateinfo.lDate}}</span></p>
-        <p v-if="dateinfo.hasOwnProperty('value') && dateinfo.value != '' " style="font-family: 'muyao'; font-size:24px;color:rgb(70,70,70);">
+        <p v-if="dateinfo.hasOwnProperty('value') && dateinfo.value != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(70,70,70);">
             今天也是<span style="background-color: #FBDA61;
             background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
             color: transparent;
             font-size:40px;
             ">{{dateinfo.value}}</span>哦!</p>
-        <p v-else-if="dateinfo.hasOwnProperty('term') && dateinfo.term != '' " style="font-family: 'muyao'; font-size:24px;color:rgb(70,70,70);">
+        <p v-else-if="dateinfo.hasOwnProperty('term') && dateinfo.term != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(70,70,70);">
             今天也是<span style="background-color: #FBDA61;
             background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
             color: transparent;
             font-size:40px;
             ">{{dateinfo.term}}</span>哦!</p>
-        <p v-else-if="dateinfo.hasOwnProperty('desc') && dateinfo.desc != '' " style="font-family: 'muyao'; font-size:24px;color:rgb(70,70,70);">
+        <p v-else-if="dateinfo.hasOwnProperty('desc') && dateinfo.desc != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(70,70,70);">
             今天也是<span style="background-color: #FBDA61;
             background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
             color: transparent;
             font-size:40px;
             ">{{dateinfo.desc}}</span>哦!</p>
-        <el-progress type="circle" :percentage="loadper" ></el-progress>            
-        <p style="font-size:20px;">loading...</p>
+        <el-button @click="clickbtn()" style="width:50%;" type="primary">开始浏览</el-button>
       </div>
+
+
 
       <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="showfail==true" @click="refresh">
         <i class="el-icon-refresh-right" style="color:#409eff;font-size:60px;"></i>      
@@ -187,6 +195,30 @@
     <!-- </router-view> -->
     </div>
     <script>
+        window.onload = function () {
+            document.onkeydown = function () {
+                var e = window.event || arguments[0];
+                //屏蔽F12
+                if (e.keyCode == 123) {
+        
+                    return false;
+                    //屏蔽Ctrl+Shift+I
+                } else if ((e.ctrlKey) && (e.shiftKey) && (e.keyCode == 73)) {
+        
+                    return false;
+                    //屏蔽Shift+F10
+                } else if ((e.shiftKey) && (e.keyCode == 121)) {
+                    return false;
+                }
+            };
+            //屏蔽右键单击
+            document.oncontextmenu = function () {
+                return false;
+            }
+        }
+        
+    
+
       const App = {
         data() {
           return {
@@ -198,6 +230,7 @@
                 'lDate':'xx',
             },
             curdate:null,
+            loadfinished:false,
             loading:true,
             curpage:0,
             negtivatecol:'#E4E7ED',
@@ -285,10 +318,15 @@
           };
         },
         methods:{
+            clickbtn()
+            {
+                this.loading = false;
+                this.showlove();
+            },
             showlove()
             {
-                window.onload = () => 
-                {
+                // window.onload = () => 
+                // {
                     var canvas = document.getElementById("canvas");
 
                     canvas.width = window.innerWidth;
@@ -576,7 +614,7 @@
                     }
 
                     draw();
-                }
+                // }
             },
             sigeach(i)
             {
@@ -603,8 +641,9 @@
                     if(this.loadcnt==this.totalpage)
                     {
                         
-                        this.loading=false;
-                        this.showlove();
+                        // this.loading=false;
+                        this.loadfinished = true;
+                        // this.showlove();
                     }
                 }
                 image.onerror = ()=>
@@ -621,8 +660,9 @@
                             this.showfail=true;
                             return ;
                         }
-                        this.loading=false;
-                        this.showlove();
+                        // this.loading=false;
+                        this.loadfinished = true;
+                        // this.showlove();
                     }
                 }
             },
@@ -729,44 +769,47 @@
             dateget()
             {
                 
-                const readBlobAsText = (blob, encoding) => {
-                    return new Promise((resolve, reject) => {
-                        const fr = new FileReader();
-                        fr.onload = event => {
-                            resolve(fr.result);
-                        };
-                        fr.onerror = err => {
-                            reject(err);
-                        };
-                        fr.readAsText(blob, encoding);
-                    });
-                };
-                
-                $.ajax({
-                    url:'https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query=2021年8月',
-                    type:'get',
-                    // data:{'params':'fromjsonp'},
-                    dataType: "jsonp",
-                    jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
-                    jsonpCallback:"getResult",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以不写这个参数，jQuery会自动为你处理数据
-                    success: function(data){
-                        console.log(data)
-                    },
-                    error: function(){
-                        console.log('fail')
+                // const readBlobAsText = (blob, encoding) => {
+                //     return new Promise((resolve, reject) => {
+                //         const fr = new FileReader();
+                //         fr.onload = event => {
+                //             resolve(fr.result);
+                //         };
+                //         fr.onerror = err => {
+                //             reject(err);
+                //         };
+                //         fr.readAsText(blob, encoding);
+                //     });
+                // };
+
+                $.getJSON("https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query="+new Date().getFullYear()+"年"+(new Date().getMonth()+1)+"月&cb=?", data=> {
+                    
+                    console.log(data)
+                    let dates = data.data[0].almanac;
+                    let curdate = new Date();
+                    let year = curdate.getFullYear();
+                    let month = curdate.getMonth()+1;
+                    let day = curdate.getDate();
+                    for(let i=0;i<dates.length;i++)
+                    {
+                        if(dates[i].year==year&&dates[i].month==month&&dates[i].day==day)
+                        {
+                            console.log(dates[i])
+                            this.dateinfo=dates[i]
+                            break;
+                        }
                     }
                 });
 
-
-
-                // fetch("https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query=2021年8月", {
-                //     "body": null,
-                //     "method": "GET",
-                //     headers:{
-                //         host:'opendata.baidu.com'
-                //     }
+                // fetch("https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query=2021年8月&cb=jsonp_1628165929726_23992", {
+                //     body: null,
+                //     method: "GET",
+                //     headers: { "Access-Control-Allow-Origin": "*"},
+                //     mode:'no-cors',
                 // }).then(res => {
+                //     console.log(res);
                 //     const contentType = res.headers.get('content-type');
+                //     console.log(contentType)
                 //     if (contentType !== null) {
                 //         if (/(^|;)application\/json($|;)/i.test(contentType)) {
                 //             const charsetMatches = contentType.match(/(^|;)charset=([^;]+)($|;)/i);
@@ -779,6 +822,7 @@
                 //         }
                 //     }
                 // }).then(data => {
+                //     console.log(data);
                 //     let dates = data.data[0].almanac;
                 //     let curdate = new Date();
                 //     let year = curdate.getFullYear();
