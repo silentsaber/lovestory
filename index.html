@@ -741,41 +741,60 @@
                         fr.readAsText(blob, encoding);
                     });
                 };
-
-
-                fetch("https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query=2021年8月", {
-                    "body": null,
-                    "method": "GET"
-                }).then(res => {
-                    const contentType = res.headers.get('content-type');
-                    if (contentType !== null) {
-                        if (/(^|;)application\/json($|;)/i.test(contentType)) {
-                            const charsetMatches = contentType.match(/(^|;)charset=([^;]+)($|;)/i);
-                            if (charsetMatches && charsetMatches.length && charsetMatches[2]) {
-                                const charset = charsetMatches[2];
-                                return res.blob().then(blob => readBlobAsText(blob, charset)).then(JSON.parse);
-                            } else {
-                                return res.json();
-                            }
-                        }
+                
+                $.ajax({
+                    url:'https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query=2021年8月',
+                    type:'get',
+                    // data:{'params':'fromjsonp'},
+                    dataType: "jsonp",
+                    jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
+                    jsonpCallback:"getResult",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以不写这个参数，jQuery会自动为你处理数据
+                    success: function(data){
+                        console.log(data)
+                    },
+                    error: function(){
+                        console.log('fail')
                     }
-                }).then(data => {
-                    let dates = data.data[0].almanac;
-                    let curdate = new Date();
-                    let year = curdate.getFullYear();
-                    let month = curdate.getMonth()+1;
-                    let day = curdate.getDate();
-                    for(let i=0;i<dates.length;i++)
-                    {
-                        if(dates[i].year==year&&dates[i].month==month&&dates[i].day==day)
-                        {
-                            console.log(dates[i])
-                            this.dateinfo=dates[i]
-                            break;
-                        }
-                    }
+                });
 
-                })
+
+
+                // fetch("https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query=2021年8月", {
+                //     "body": null,
+                //     "method": "GET",
+                //     headers:{
+                //         host:'opendata.baidu.com'
+                //     }
+                // }).then(res => {
+                //     const contentType = res.headers.get('content-type');
+                //     if (contentType !== null) {
+                //         if (/(^|;)application\/json($|;)/i.test(contentType)) {
+                //             const charsetMatches = contentType.match(/(^|;)charset=([^;]+)($|;)/i);
+                //             if (charsetMatches && charsetMatches.length && charsetMatches[2]) {
+                //                 const charset = charsetMatches[2];
+                //                 return res.blob().then(blob => readBlobAsText(blob, charset)).then(JSON.parse);
+                //             } else {
+                //                 return res.json();
+                //             }
+                //         }
+                //     }
+                // }).then(data => {
+                //     let dates = data.data[0].almanac;
+                //     let curdate = new Date();
+                //     let year = curdate.getFullYear();
+                //     let month = curdate.getMonth()+1;
+                //     let day = curdate.getDate();
+                //     for(let i=0;i<dates.length;i++)
+                //     {
+                //         if(dates[i].year==year&&dates[i].month==month&&dates[i].day==day)
+                //         {
+                //             console.log(dates[i])
+                //             this.dateinfo=dates[i]
+                //             break;
+                //         }
+                //     }
+
+                // })
 
             }
         },
