@@ -156,43 +156,52 @@
         </el-scrollbar>
       </div>
 
-      <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loading==true && showfail==false && loadfinished==false">
+      <div class="startback" style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loading==true && showfail==false && loadfinished==false">
         <el-progress type="circle" :percentage="loadper" ></el-progress>            
         <p style="font-size:20px;">loading...</p>
       </div>
 
-      <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loadfinished==true && loading==true">
-        <p style="font-family: 'muyao'; font-size:30px;text-align:center;color: dimgray;">
+      <div class="startback" style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loadfinished==true && loading==true">
+        <p style="font-family: 'muyao'; font-size:30px;text-align:center;color: white;">
             今天是<br/><span class="dateinfox">{{dateinfo.year}}</span>年<span class="dateinfox">{{dateinfo.month}}</span>月<span class="dateinfox">{{dateinfo.day}}</span>日<br/>农历<span class="dateinfox">{{dateinfo.lMonth}}</span>月<span class="dateinfox">{{dateinfo.lDate}}</span></p>
-        <p v-if="dateinfo.hasOwnProperty('value') && dateinfo.value != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(70,70,70);">
+        <p v-if="dateinfo.hasOwnProperty('value') && dateinfo.value != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(250,250,250);">
             今天也是<span style="background-color: #FBDA61;
             background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
             color: transparent;
             font-size:40px;
             ">{{dateinfo.value}}</span>哦!</p>
-        <p v-else-if="dateinfo.hasOwnProperty('term') && dateinfo.term != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(70,70,70);">
+        <p v-else-if="dateinfo.hasOwnProperty('term') && dateinfo.term != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(250,250,250);">
             今天也是<span style="background-color: #FBDA61;
             background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
             color: transparent;
             font-size:40px;
             ">{{dateinfo.term}}</span>哦!</p>
-        <p v-else-if="dateinfo.hasOwnProperty('desc') && dateinfo.desc != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(70,70,70);">
+        <p v-else-if="dateinfo.hasOwnProperty('desc') && dateinfo.desc != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(250,250,250);">
             今天也是<span style="background-color: #FBDA61;
             background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
             color: transparent;
             font-size:40px;
             ">{{dateinfo.desc}}</span>哦!</p>
-        <el-button @click="clickbtn()" style="width:50%;" type="primary">开始浏览</el-button>
+        <el-button @click="clickbtn()" style="width:50%;background-color: #FBDA61;
+            background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);
+            color: white;
+            border-color: rgb(251,218,97);               
+        " >开始浏览</el-button>
       </div>
 
 
 
-      <div style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="showfail==true" @click="refresh">
+      <div class="startback" style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="showfail==true" @click="refresh">
         <i class="el-icon-refresh-right" style="color:#409eff;font-size:60px;"></i>      
         <span style="font-size:16px;color:#606266;margin-top:10px;">网络状况不佳</span>
         <span style="font-size:16px;color:#606266;margin-top:5px;">请重新加载</span>
       </div>
     <!-- </router-view> -->
+
+    <div id="stars" v-show="loading != false">
+    </div>
+
+
     </div>
     <script>
         window.onload = function () {
@@ -784,7 +793,7 @@
 
                 $.getJSON("https://opendata.baidu.com/api.php?tn=wisetpl&format=json&resource_id=39043&query="+new Date().getFullYear()+"年"+(new Date().getMonth()+1)+"月&cb=?", data=> {
                     
-                    console.log(data)
+                    // console.log(data)
                     let dates = data.data[0].almanac;
                     let curdate = new Date();
                     let year = curdate.getFullYear();
@@ -794,7 +803,7 @@
                     {
                         if(dates[i].year==year&&dates[i].month==month&&dates[i].day==day)
                         {
-                            console.log(dates[i])
+                            // console.log(dates[i])
                             this.dateinfo=dates[i]
                             break;
                         }
@@ -849,6 +858,25 @@
             this.datecom();
             this.init();
         },
+        mounted:function()
+        {
+            let starsCount = 800; //星星数量
+            let distance = 800;//间距
+            let parentStarts = document.getElementById("stars");
+            for (let i = 0; i < starsCount; i++) {
+                let childStart = document.createElement("div");
+                childStart.setAttribute("class", 'star');
+                parentStarts.appendChild(childStart);
+            }
+            for (let i = 0; i < starsCount; i++) {
+                let item = parentStarts.children[i];
+                let speed = 0.2 + (Math.random() * 1);
+                let thisDistance = distance + (Math.random() * 300);
+                // console.log(parentStarts);
+                item.style.transformOrigin = "0 0 " + thisDistance + "px";
+                item.style.transform = "translate3d(0,0,-" + thisDistance + "px) rotateY(" + (Math.random() * 360) + "deg) rotateX(" + (Math.random() * -50) + "deg) scale(" + speed + "," + speed + ")";
+            }
+        }
     };
       const app = Vue.createApp(App);
       app.use(ElementPlus);
@@ -856,6 +884,7 @@
     </script>
   </body>
 </html>
+
 
 <style>
 html,body
@@ -869,6 +898,12 @@ html,body
 {
     height: 100vh;
     background-color: #F2F6FC;
+}
+.startback
+{
+    background: radial-gradient(200% 100% at bottom center, #f7f7b6, #e96f92, #1b2947);
+    background: radial-gradient(220% 105% at top center, #1b2947 10%, #75517d 40%, #e96f92 65%, #f7f7b6);
+    background-attachment: fixed;
 }
 .el-main
 {
@@ -908,8 +943,40 @@ html,body
 }
 .dateinfox
 {
-    color:dodgerblue;
+    /* color:dodgerblue; */
+    color: hotpink;
+    text-shadow: 2px 2px 2px pink;
 }
+
+@keyframes rotate {
+    0% {
+        transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(0);
+    }
+
+    100% {
+        transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(-360deg);
+    }
+}
+
+#stars {
+    transform: perspective(500px);
+    transform-style: preserve-3d;
+    position: fixed;
+    perspective-origin: 50% 100%;
+    left: 50%;
+    animation: rotate 66s infinite linear;
+    bottom: 0;
+}
+.star {
+    width: 2px;
+    height: 2px;
+    background: #f7f7b8;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    backface-visibility: hidden;
+}
+
 @keyframes bounce{
     0% {
     transform: translate3d(0, 0, 0);
