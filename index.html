@@ -162,21 +162,21 @@
       </div>
 
       <div class="startback" style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loadfinished==true && loading==true">
-        <p style="font-family: 'muyao'; font-size:30px;text-align:center;color: white;">
+        <p style="font-family: 'muyao'; font-size:30px;text-align:center;color: white;text-shadow: 0px 0px 20px white;">
             今天是<br/><span class="dateinfox">{{dateinfo.year}}</span>年<span class="dateinfox">{{dateinfo.month}}</span>月<span class="dateinfox">{{dateinfo.day}}</span>日<br/>农历<span class="dateinfox">{{dateinfo.lMonth}}</span>月<span class="dateinfox">{{dateinfo.lDate}}</span></p>
-        <p v-if="dateinfo.hasOwnProperty('value') && dateinfo.value != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(250,250,250);">
+        <p v-if="dateinfo.hasOwnProperty('value') && dateinfo.value != '' " style="font-family: 'muyao'; font-size:22px;color:rgb(250,250,250);    text-shadow: white 0px 0px 60px;">
             今天也是<span style="background-color: #FBDA61;
             background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
             color: transparent;
             font-size:40px;
             ">{{dateinfo.value}}</span>哦!</p>
-        <p v-else-if="dateinfo.hasOwnProperty('term') && dateinfo.term != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(250,250,250);">
+        <p v-else-if="dateinfo.hasOwnProperty('term') && dateinfo.term != '' " style="font-family: 'muyao'; font-size:22px;color:rgb(250,250,250);    text-shadow: white 0px 0px 60px;">
             今天也是<span style="background-color: #FBDA61;
             background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
             color: transparent;
             font-size:40px;
             ">{{dateinfo.term}}</span>哦!</p>
-        <p v-else-if="dateinfo.hasOwnProperty('desc') && dateinfo.desc != '' " style="font-family: 'muyao'; font-size:30px;color:rgb(250,250,250);">
+        <p v-else-if="dateinfo.hasOwnProperty('desc') && dateinfo.desc != '' " style="font-family: 'muyao'; font-size:22px;color:rgb(250,250,250);    text-shadow: white 0px 0px 60px;">
             今天也是<span style="background-color: #FBDA61;
             background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
             color: transparent;
