@@ -17,7 +17,7 @@
     <title>璨若星河</title>
   </head>
   <body>
-    <div id="app">
+    <div id="app" >
     <!-- <router-view> -->
       <el-container style="height:100%;" v-show="loading==false && showfail==false">
         <el-header style="z-index:1;text-align: center; line-height: 60px;background-color: black;overflow: hidden;display: flex;justify-content: center;">
@@ -48,6 +48,7 @@
         <el-main style="display: flex;
         flex-flow: column;
         justify-content: center;
+        width:100%;
         align-items: center;z-index:2;">
             <!-- <canvas id="c" style="z-index: 0;position: absolute;width:100%;height:calc(100% - 120px);"></canvas> -->
            
@@ -649,15 +650,11 @@
                     this.loadper = Math.floor(this.loadcnt / this.totalpage * 100);
                     this.data[i].img = image.src;
                     // this.data[i].img='1.jpg'
-
-
                     if(this.loadcnt==this.totalpage)
                     {
                         
                         // this.loading=false;
-
                         this.loadfinished = true;
-                        
                         // this.showlove();
                     }
                 }
@@ -667,7 +664,6 @@
                     this.errorcnt++;
                     this.loadper = Math.floor(this.loadcnt / this.totalpage * 100);
                     this.data[i].img = image.src;
-
                     if(this.loadcnt==this.totalpage)
                     {
                         if(this.errorcnt >= Math.ceil(this.totalpage/2)) //未能加载的图片超过半数，则显示无法加载
@@ -903,6 +899,7 @@ html,body
 #app
 {
     height: 100vh;
+    width:100%;
     background-color: #F2F6FC;
 }
 .startback
@@ -914,6 +911,10 @@ html,body
 .el-main
 {
     padding: 10px;
+}
+.el-main .el-scrollbar__wrap
+{
+    width:100%;
 }
 .showimg .el-image__error, .showimg .el-image__inner, .showimg .el-image__placeholder
 {
@@ -936,6 +937,7 @@ html,body
 {
   position: relative;
 }
+
 .logall .el-scrollbar__wrap{
 	overflow-x: hidden;
 }
