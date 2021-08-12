@@ -157,8 +157,12 @@
       </div>
 
       <div class="startback" style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loading==true && showfail==false && loadfinished==false">
-        <el-progress type="circle" :percentage="loadper" ></el-progress>            
-        <p style="font-size:20px;">loading...</p>
+        <el-progress type="circle" :percentage="loadper" color="#F56C6C" >
+            <template #default="{ percentage }">
+                <span style="color:white;font-size:20px;">{{ percentage }}%</span>
+            </template>
+        </el-progress>            
+        <p style="font-size:20px;color:white;">loading...</p>
       </div>
 
       <div class="startback" style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loadfinished==true && loading==true">
@@ -651,7 +655,9 @@
                     {
                         
                         // this.loading=false;
+
                         this.loadfinished = true;
+                        
                         // this.showlove();
                     }
                 }
