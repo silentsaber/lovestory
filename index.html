@@ -108,13 +108,15 @@
             
         </el-main>
         <el-footer style="text-align: center;z-index:1;padding-top:10px;">
-            <el-button style="width:40%;" plain @click="pageminus" :disabled="canminus">上一张</el-button>
-            <el-button style="width:40%;" plain @click="pageadd" :disabled="canadd">下一张</el-button>
+            <el-button style="width:40%;"  @click="pageminus" :disabled="canminus">上一张</el-button>
+            <el-button style="width:40%;"  @click="pageadd" :disabled="canadd">下一张</el-button>
         </el-footer>
       </el-container>
 
-      <div class="logall" style="position:fixed;left:0;top:0;width:100%;height: 100%;z-index:2;background-color:#F2F6FC;" v-show="showtimeline">
-        <div @click="showtimeline=false;" style="position: fixed;width:100%;height:60px;left:0;top:0;z-index:3;background-color:rgb(198, 226, 255);text-align: center;">
+      <div class="logall" style="position:fixed;left:0;top:0;width:100%;height: 100%;z-index:2;
+      background-color:rgb(247, 239, 241);" 
+      v-show="showtimeline">
+        <div @click="showtimeline=false;" style="position: fixed;width:100%;height:60px;left:0;top:0;z-index:3;background-color:rgb(233, 111, 146);text-align: center;">
             <i class="el-icon-circle-close" style="line-height: 60px;color:white;font-size: 40px;"></i>
         </div>
         <el-scrollbar style="position: relative; top:60px; height:calc(100vh - 60px);overflow-x: hidden;width:100%;" class="scroll_right">
@@ -132,6 +134,7 @@
                   justifyContent: 'center',
                   flexDirection: 'column',
                   alignItems: 'center', 
+                  color: (curpage==index ? one.color: 'black' ),
                   }">
                     <b style="padding:5px 0;">{{one.title}}</b>
                     <el-divider style="margin:0;"></el-divider>
@@ -248,7 +251,7 @@
             loading:true,
             curpage:0,
             negtivatecol:'#E4E7ED',
-            activatecol:'#409EFF',
+            activatecol:'rgb(233, 111, 146)',
             showtimeline:false,
             totalpage:11,
             canminus:true,
@@ -900,7 +903,8 @@ html,body
 {
     height: 100vh;
     width:100%;
-    background-color: #F2F6FC;
+    background-color: rgb(248, 232, 236);
+    /* #F2F6FC; */
 }
 .startback
 {
@@ -915,6 +919,17 @@ html,body
 .el-main .el-scrollbar__wrap
 {
     width:100%;
+}
+.el-footer .el-button
+{
+    background-color: rgb(251, 218, 97);
+    background-image: linear-gradient(180deg, rgb(251, 218, 97) 0%, rgb(255, 90, 205) 90%);
+    color: white;
+}
+.el-footer .el-button.is-disabled
+{
+    background: #303133;
+    color: #C0C4CC;
 }
 .showimg .el-image__error, .showimg .el-image__inner, .showimg .el-image__placeholder
 {
