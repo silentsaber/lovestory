@@ -773,15 +773,16 @@
             {
                 this.showtimeline=true;
                 this.$nextTick(() => {
-                    $(".logall .el-timeline").css("position","fixed").ready(()=>{
-                        $(".logall .el-timeline").css("position","relative").ready(()=>{
-                            document.querySelector(`#idx${this.curpage}`).scrollIntoView({
-                            behavior: "smooth",  // 平滑过渡
-                            block:    "start"  // 上边框与视窗顶部平齐。默认值
-                            })
-                        })
+                    // $(".logall .el-timeline").css("position","fixed").ready(()=>{
+                    //     $(".logall .el-timeline").css("position","relative").ready(()=>{
+                            
+                    //     })
+                    // })
+                    document.querySelector(`#idx${this.curpage}`).scrollIntoView({
+                    behavior: "smooth",  // 平滑过渡
+                    block:    "start",  // 上边框与视窗顶部平齐。默认值
+                    inline:"end",
                     })
-                    
                     
 
                 })
