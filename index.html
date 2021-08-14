@@ -120,7 +120,7 @@
             <i class="el-icon-circle-close" style="line-height: 60px;color:white;font-size: 40px;"></i>
         </div>
         <el-scrollbar style="position: relative; top:60px; height:calc(100vh - 60px);overflow-x: hidden;width:100%;" class="scroll_right">
-            <el-timeline style="left:calc(50% - 46px);position: relative;padding-top: 20px;">
+            <el-timeline style="">
                 <el-timeline-item v-for="(one, index) in data"
                 :timestamp="one.time"
                 placement="top"
@@ -773,11 +773,18 @@
             {
                 this.showtimeline=true;
                 this.$nextTick(() => {
+                    $(".logall .el-timeline").css("position","fixed").ready(()=>{
+                        $(".logall .el-timeline").css("position","relative")
+                    })
+                    
                     document.querySelector(`#idx${this.curpage}`).scrollIntoView({
                     behavior: "smooth",  // 平滑过渡
                     block:    "start"  // 上边框与视窗顶部平齐。默认值
                     })
+
                 })
+                
+                console.log($(".log .el-timeline"))
             },
 
             dateget()
@@ -918,7 +925,7 @@ html,body
 }
 .el-main .el-scrollbar__wrap
 {
-    width:100%;
+    /* width:100%; */
 }
 .el-footer .el-button
 {
@@ -956,9 +963,20 @@ html,body
 {
   position: relative;
 }
-.logall .el-scrollbar__view
+.logall .el-scrollbar__view, .logall .el-scrollbar__wrap
 {
-    position: relative;
+    /* position: absolute !important;
+    width: 100%;
+    left:0;
+    top:0; */
+}
+.logall .el-timeline
+{
+    left:calc(50vw - 46px);
+    /* left:-moz-calc(50vw - 46px); 
+    left:-webkit-calc(50vw - 46px); */
+    /* left:50vw; */
+    position: relative;padding-top: 20px;
 }
 .logall .el-scrollbar__wrap{
 	overflow-x: hidden;
