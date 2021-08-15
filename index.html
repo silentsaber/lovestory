@@ -135,10 +135,11 @@
                   flexDirection: 'column',
                   alignItems: 'center', 
                   color: (curpage==index ? one.color: 'black' ),
-                  }">
-                    <b style="padding:5px 0;">{{one.title}}</b>
+                  }"
+                  >
+                    <b style="padding:5px 0;" v-text="one.title"></b>
                     <el-divider style="margin:0;"></el-divider>
-                    <p style="padding: 0 10px;">{{one.sig}}</p>
+                    <p style="padding: 0 10px;" v-text="one.sig"></p>
                   </el-card>
                 </el-timeline-item>
                 <el-timeline-item :color="negtivatecol">
@@ -169,32 +170,32 @@
         <p style="font-size:20px;color:white;">loading...</p>
       </div>
 
-      <div class="startback" style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loadfinished==true && loading==true">
-        <p style="font-family: 'muyao'; font-size:30px;text-align:center;color: white;text-shadow: 0px 0px 20px white;">
+      <div class="startback" style="width:100%;height:100%;display: flex;flex-direction: column;justify-content: center;align-items: center;" v-show="loadfinished==true && loading==true" v-cloak>
+            <p style="font-family: 'muyao'; font-size:30px;text-align:center;color: white;text-shadow: 0px 0px 20px white;">
             今天是<br/><span class="dateinfox">{{dateinfo.year}}</span>年<span class="dateinfox">{{dateinfo.month}}</span>月<span class="dateinfox">{{dateinfo.day}}</span>日<br/>农历<span class="dateinfox">{{dateinfo.lMonth}}</span>月<span class="dateinfox">{{dateinfo.lDate}}</span></p>
-        <p v-if="dateinfo.hasOwnProperty('value') && dateinfo.value != '' " style="font-family: 'muyao'; font-size:22px;color:rgb(250,250,250);    text-shadow: white 0px 0px 60px;">
-            今天也是<span style="background-color: #FBDA61;
-            background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
-            color: transparent;
-            font-size:40px;
-            ">{{dateinfo.value}}</span>哦!</p>
-        <p v-else-if="dateinfo.hasOwnProperty('term') && dateinfo.term != '' " style="font-family: 'muyao'; font-size:22px;color:rgb(250,250,250);    text-shadow: white 0px 0px 60px;">
-            今天也是<span style="background-color: #FBDA61;
-            background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
-            color: transparent;
-            font-size:40px;
-            ">{{dateinfo.term}}</span>哦!</p>
-        <p v-else-if="dateinfo.hasOwnProperty('desc') && dateinfo.desc != '' " style="font-family: 'muyao'; font-size:22px;color:rgb(250,250,250);    text-shadow: white 0px 0px 60px;">
-            今天也是<span style="background-color: #FBDA61;
-            background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
-            color: transparent;
-            font-size:40px;
-            ">{{dateinfo.desc}}</span>哦!</p>
-        <el-button @click="clickbtn()" style="width:50%;background-color: #FBDA61;
-            background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);
-            color: white;
-            border-color: rgb(251,218,97);               
-        " >开始浏览</el-button>
+            <p v-if="dateinfo.hasOwnProperty('value') && dateinfo.value != '' " style="font-family: 'muyao'; font-size:22px;color:rgb(250,250,250);    text-shadow: white 0px 0px 60px;">
+                今天也是<span style="background-color: #FBDA61;
+                background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
+                color: transparent;
+                font-size:40px;
+                ">{{dateinfo.value}}</span>哦!</p>
+            <p v-else-if="dateinfo.hasOwnProperty('term') && dateinfo.term != '' " style="font-family: 'muyao'; font-size:22px;color:rgb(250,250,250);    text-shadow: white 0px 0px 60px;">
+                今天也是<span style="background-color: #FBDA61;
+                background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
+                color: transparent;
+                font-size:40px;
+                ">{{dateinfo.term}}</span>哦!</p>
+            <p v-else-if="dateinfo.hasOwnProperty('desc') && dateinfo.desc != '' " style="font-family: 'muyao'; font-size:22px;color:rgb(250,250,250);    text-shadow: white 0px 0px 60px;">
+                今天也是<span style="background-color: #FBDA61;
+                background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);-webkit-background-clip: text;
+                color: transparent;
+                font-size:40px;
+                ">{{dateinfo.desc}}</span>哦!</p>
+            <el-button @click="clickbtn()" style="width:50%;background-color: #FBDA61;
+                background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);
+                color: white;
+                border-color: rgb(251,218,97);               
+            " >开始浏览</el-button>
       </div>
 
 
@@ -902,6 +903,9 @@
 
 
 <style>
+[v-cloak] {
+   display: none;
+}
 html,body
 {
     height:100%;
