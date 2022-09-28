@@ -128,7 +128,7 @@
                 :class="index%2==0?'showr':'showl'"
                 :id = "'idx'+index"
                 >
-                  <el-card  @click="data[curpage].color=negtivatecol;curpage=index;pageupdate();data[curpage].color=activatecol;showtimeline=false;"
+                  <el-card  @click.native="data[curpage].color=negtivatecol;curpage=index;pageupdate();data[curpage].color=activatecol;showtimeline=false;"
                   :style="{borderColor: one.color, boxShadow: '0 2px 12px 0 '+(one.color), }"
                   :body-style="{ padding: '0px',display: 'flex',
                   justifyContent: 'center',
