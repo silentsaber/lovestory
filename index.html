@@ -235,9 +235,8 @@
             }
         }
         
-    
-
-      const App = {
+    new Vue({
+      el: '#app',
         data() {
           return {
             dateinfo:{
@@ -893,10 +892,10 @@
                 item.style.transform = "translate3d(0,0,-" + thisDistance + "px) rotateY(" + (Math.random() * 360) + "deg) rotateX(" + (Math.random() * -50) + "deg) scale(" + speed + "," + speed + ")";
             }
         }
-    };
-      const app = Vue.createApp(App);
-      app.use(ElementPlus);
-      app.mount("#app");
+    })
+//       const app = Vue.createApp(App);
+//       app.use(ElementPlus);
+//       app.mount("#app");
     </script>
   </body>
 </html>
